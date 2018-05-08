@@ -34,3 +34,20 @@ int main(){
   ofstream fout("out.bmp");
   char ch = 'a';
   fin.read(reinterpret_cast<char*>(&bmp),sizeof(BMPHEAD));
+  fout.write(reinterpret_cast<char*>(&bmp),sizeof(BMPHEAD));
+  int padding = (4 - (bmp.width * sizeof(PIXELDATA)) % 4 );
+  for(int i = 0; i < bmp.depth; i++){
+     for(int j = 0; j < bmp.width; j++){
+         fin.read(reinterpret_cast<char*>(&bmp),sizeof(PIXELDATA));
+         fout.write(reinterpret_cast<char*>(&bmp),sizeof(PIXELDATA));
+     } 
+     fin.seekg(padding, SEEK_CUR);
+     for(int k = 0; k < padding; k++){
+         fout.put(0x00);
+     }
+    
+  }
+   fin.close();
+   fout.close();
+   return 0;
+}
