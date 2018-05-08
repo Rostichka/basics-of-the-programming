@@ -89,13 +89,12 @@ int main() {
                 help++;
             }
         }
-       if (((nh.width * 3) % 4) != 0)
-        
-         
-           for (int s = 0;s < (4 - Q);s++)
-           {
-           fputc(0x00, newf);
-           }
+       size_t padding = 0;
+        if ((nh.width * 3) % 4) padding = 4 - (nh.width * 3) % 4;
+        for (size_t t = 0; t < padding; ++t) {
+            fread(&px, sizeof(px), 1, f);
+            fwrite(&px, sizeof(px), 1, newf);
+        }
         
         for (int m = 1;m < n;m++)
         {
